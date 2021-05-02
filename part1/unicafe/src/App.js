@@ -37,7 +37,10 @@ const NoFeedback = (props) => {
 const Statistic = (props) => {
   return (
     <>
-      <p>{props.name}: {props.stat}</p>
+      <tr> 
+        <td>{props.name}</td>
+        <td>{props.stat}</td>
+      </tr>
     </>
   )
 }
@@ -45,12 +48,17 @@ const Statistic = (props) => {
 const Statistics = (props) => {
   return (
     <div>
-      <Statistic name={'Good'} stat={props.good}/>
-      <Statistic name={'Neutral'} stat={props.neutral}/>
-      <Statistic name={'bad'} stat={props.bad}/>
-      <Statistic name={'All'} stat={props.total}/>
-      <Statistic name={'Average'} stat={props.average}/>
-      <Statistic name={'Positive'} stat={props.positive}/>
+      <br></br>
+      <table>
+        <tbody>
+          <Statistic name={'Good'} stat={props.good}/>
+          <Statistic name={'Neutral'} stat={props.neutral}/>
+          <Statistic name={'bad'} stat={props.bad}/>
+          <Statistic name={'All'} stat={props.total}/>
+          <Statistic name={'Average'} stat={props.average}/>
+          <Statistic name={'Positive'} stat={props.positive}/>
+        </tbody>
+      </table>
     </div>
   )
 }
