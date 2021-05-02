@@ -34,16 +34,32 @@ const NoFeedback = (props) => {
   )
 }
 
+const Statistic = (props) => {
+  return (
+    <>
+      <p>{props.name}: {props.stat}</p>
+    </>
+  )
+}
+
 const Statistics = (props) => {
   return (
-    <div className="stats">
-      <p>Good: {props.good}</p>
-      <p>Neutral: {props.neutral}</p>
-      <p>Bad: {props.bad}</p>
-      <p>All: {props.all}</p>
-      <p>Average {props.average}</p>
-      <p>Positive {props.positive}%</p>
+    <div>
+      <Statistic name={'Good'} stat={props.good}/>
+      <Statistic name={'Neutral'} stat={props.neutral}/>
+      <Statistic name={'bad'} stat={props.bad}/>
+      <Statistic name={'All'} stat={props.total}/>
+      <Statistic name={'Average'} stat={props.average}/>
+      <Statistic name={'Positive'} stat={props.positive}/>
     </div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <>
+      <button onClick={props.onClick}>{props.name}</button>
+    </>
   )
 }
 
@@ -84,9 +100,10 @@ const App = () => {
   return (
     <div className="App">
       <h1>{title}</h1>
-      <button onClick={() => goodButtonHandler(good)}>Good</button>
-      <button onClick={() => neutralButtonHandler(neutral)}>Neutral</button>
-      <button onClick={() => badButtonHandler(bad)}>Bad</button>
+      {/* <button onClick={() => goodButtonHandler(good)}>Good</button> */}
+      <Button onClick={() => goodButtonHandler(good)} name={"Good"}/>
+      <Button onClick={() => neutralButtonHandler(neutral)} name={"Neutral"}/>
+      <Button onClick={() => badButtonHandler(bad)} name={"Bad"}/>
       <NoFeedback stats={stats}/>
       <Content 
       stats={stats}
