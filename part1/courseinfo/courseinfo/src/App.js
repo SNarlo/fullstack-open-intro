@@ -32,10 +32,10 @@ const Content = ({parts}) => {
   )
 }
 
-const Total = (props) => {
+const Total = ({parts}) => {
   return (
     <>
-      <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+      <p><b>Number of exercises {Object.values(parts).reduce((sum, {exercises}) => sum + exercises, 0)}</b></p>
     </>
   )  
 }
@@ -61,8 +61,8 @@ const App = () => {
         id: 3
       },
       {
-        name: 'Full Stack Open',
-        exercises: 25,
+        name: 'Redux',
+        exercises: 11,
         id: 4
       }
     ]
@@ -72,7 +72,7 @@ const App = () => {
     <div>
       <Header course={course.name}/>
       <Content parts={course.parts}/>
-      {/* <Total parts={course.parts}/> */}
+      <Total parts={course.parts}/>
     </div>
   )
 }
