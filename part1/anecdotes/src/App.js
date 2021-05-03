@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
 
+const Heading = (props) => {
+  return (
+    <div>
+      <h1>{props.name}</h1>
+    </div>
+  )
+}
+
 const Button = (props) => {
   return (
     <div>
@@ -25,9 +33,13 @@ const App = () => {
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]
+
+  const heading1 = "Anecdote of the day"
+  const heading2 = "Anecdote with most votes"
    
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(5).fill(0))
+  const [mostVotes, setMostVotes] = useState(0)
 
   const selectRandomQuote = () => {
     let randomNum = Math.floor(Math.random() * 5)
@@ -42,16 +54,34 @@ const App = () => {
     copy[selected] += 1
 
     setVotes(copy)
+    setMostVotes(getMostVotes(copy))
+  }
+
+  const getMostVotes = (vals) => {
+    let max = 0
+    let maxIndex = 0
+    for (const [key, value] of Object.entries(vals)) {
+      if (value >= max) {
+        max = value
+        maxIndex = key;
+      }
+    }
+    return maxIndex
   }
 
 
 
   return (
     <div>
+      <Heading name={heading1} />
       <Statement quote={anecdotes[selected]}/>
       <Statement quote={"Has " + votes[selected] + " vote/s"} />
       <Button onClick={selectRandomQuote} name={"Next Anecdote"}/>
       <Button onClick={addVote} name={"Vote"}/>
+      <br></br>
+      <Heading name={heading2} />
+      <Statement quote={anecdotes[mostVotes]}/>
+      <Statement quote={"Has " + votes[mostVotes] + " vote/s"} />
     </div>
   )
 }
