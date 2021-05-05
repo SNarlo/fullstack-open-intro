@@ -15,9 +15,21 @@ const App = () => {
     { name: 'Arto Hellas' }
   ]) 
   const [ newName, setNewName ] = useState('')
-
+ 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+
+  const checkIfIncludedAlready = (newName) => {
+    let included;
+    persons.forEach(person => {
+      if (person.name.includes(newName)) {
+        included = true
+      } else {
+        included = false
+      }
+    })
+    return included
   }
 
   const addNewPerson = (event) => {
@@ -25,8 +37,14 @@ const App = () => {
     const newPerson = {
       name: newName
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
+
+    if (checkIfIncludedAlready(newPerson.name)) {
+      window.alert( newPerson.name + " is already added")
+      setNewName('')
+    } else {
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+    }
   }
 
   return (
@@ -34,7 +52,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form>
         <div>
-          name: <input onChange={handleNameChange}/>
+          name: <input onChange={handleNameChange} value={newName}/>
         </div>
         <div>
           <button type="submit" onClick={addNewPerson}>add</button>
