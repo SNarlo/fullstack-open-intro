@@ -39,7 +39,7 @@ const App = () => {
     }
 
     if (checkIfIncludedAlready(newPerson.name)) {
-      window.alert( newPerson.name + " is already added")
+      window.alert(`${newPerson.name} + " is already added`)
       setNewName('')
     } else {
       setPersons(persons.concat(newPerson))
