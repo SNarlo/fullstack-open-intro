@@ -31,11 +31,15 @@ const Button = (props) => {
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas',
-      number: '0123' }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
+  const [ filtered, setFilter] = useState([])
+  const [ listShown, setListShown] = useState(persons) 
  
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -63,7 +67,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    
+
 
     if (checkIfIncludedAlready(newPerson.name)) {
       window.alert(`${newPerson.name} + " is already added`)
@@ -76,11 +80,25 @@ const App = () => {
     }
   }
 
+  const filterList = (event) => {
+    setFilter([])
+    persons.forEach(person => {
+      if (person.name.includes(event.target.value)) {
+        if (!(filtered.includes(person.name))) {
+          setFilter(filtered.concat(person))
+        }
+      }
+    })
+    setListShown(filtered)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Input name={'Filter phonebook: '} change={filterList}/>
       <form>
         <div>
+          <h2>Add new contact</h2>
           <Input name={'name: '} change={handleNameChange} val={newName}/>
           <Input name={'number: '} change={handleNumberChange} val={newNumber}/>
         </div>
@@ -89,7 +107,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Numbers persons={persons}/>
+      <Numbers persons={listShown}/>
     </div>
   )
 }
