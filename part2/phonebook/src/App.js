@@ -82,14 +82,9 @@ const App = () => {
 
   const filterList = (event) => {
     setFilter([])
-    persons.forEach(person => {
-      if (person.name.includes(event.target.value)) {
-        if (!(filtered.includes(person.name))) {
-          setFilter(filtered.concat(person))
-        }
-      }
-    })
+    setFilter(persons.filter(person => person.name.toLowerCase().includes(event.target.value)))
     setListShown(filtered)
+
   }
 
   return (
