@@ -29,6 +29,20 @@ const Button = (props) => {
   )
 }
 
+const Form = (props) => {
+  return (
+    <form>
+      <div>
+         {props.nameInput}
+         {props.numberInput} 
+      </div>
+        <div>
+          {props.addButton}
+        </div>
+    </form>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -91,16 +105,12 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Input name={'Filter phonebook: '} change={filterList}/>
-      <form>
-        <div>
-          <h2>Add new contact</h2>
-          <Input name={'name: '} change={handleNameChange} val={newName}/>
-          <Input name={'number: '} change={handleNumberChange} val={newNumber}/>
-        </div>
-        <div>
-          <Button name='add' click={addNewPerson}/>
-        </div>
-      </form>
+      <h2>Add New Contact</h2>
+      <Form heading={"Add a new contact"} 
+        nameInput={<Input name={'name: '} change={handleNameChange} val={newName}/>}
+        numberInput={<Input name={'number: '} change={handleNumberChange} val={newNumber}/>}
+        addButton={<Button name='add' click={addNewPerson}/>}
+      />
       <h2>Numbers</h2>
       <Numbers persons={listShown}/>
     </div>
