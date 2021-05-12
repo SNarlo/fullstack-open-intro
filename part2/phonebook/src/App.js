@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Numbers = (props) => {
   return (
@@ -44,16 +45,21 @@ const Form = (props) => {
 }
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filtered, setFilter] = useState([])
-  const [ listShown, setListShown] = useState(persons) 
+  const [ listShown, setListShown] = useState([]) 
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+        setListShown(response.data)
+      })
+  }, [])
  
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -82,13 +88,13 @@ const App = () => {
       number: newNumber
     }
 
-
     if (checkIfIncludedAlready(newPerson.name)) {
       window.alert(`${newPerson.name} + " is already added`)
       setNewName('')
       setNewNumber('')
     } else {
       setPersons(persons.concat(newPerson))
+      setListShown(persons)
       setNewName('')
       setNewNumber('')
     }
