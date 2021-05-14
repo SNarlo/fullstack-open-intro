@@ -19,9 +19,26 @@ const Output = (props) => {
   )
 }
 
+const SingleCountry = (props) => {
+  return (
+    <div>
+      <h1>{props.country}</h1>
+      <p>Capital: {props.capital}</p>
+      <p>Population: {props.population}</p>
+
+      <h2>Languages</h2>
+      {props.language.map(language => 
+      <li key={language.name}>{language.name}</li>)}
+      <img src={props.flag} alt="country flag" height="100px" width="120px"></img>
+    </div>
+  )
+}
+
 const App = () => {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFiltered] = useState([])
+  const [displayedContent, setDisplayedContent] = useState()
+
   useEffect(() => {
     axios
     .get('https://restcountries.eu/rest/v2/all')
@@ -35,18 +52,33 @@ const App = () => {
     
     if (tempArray.length < 10) {
       setFiltered(tempArray)
+      setDisplayedContent(<Output countries={filteredCountries}/>)
     } 
     
     if (tempArray.length >= 10) {
       let tooManySearches = [{name: 'Too many matches, specify search more'}]
       setFiltered(tooManySearches)
+      setDisplayedContent(<Output countries={filteredCountries}/>)
+    }
+
+    if (tempArray.length === 1) {
+      setDisplayedContent(
+      <SingleCountry 
+        country={tempArray[0].name} 
+        capital={tempArray[0].capital} 
+        population={tempArray[0].population} 
+        language={tempArray[0].languages}
+        flag={tempArray[0].flag}
+      />)
     }
   }
 
   return (
    <div>
      <Input text={'Find countries: '} changed={filterCountries}/>
-     <Output countries={filteredCountries}/>
+     <div>
+       {displayedContent}
+     </div>
    </div> 
   )
 }
