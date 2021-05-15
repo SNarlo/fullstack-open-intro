@@ -13,7 +13,7 @@ const Output = (props) => {
   return (
     <div>
       {props.countries.map(country => 
-        <p key={country.name}>{country.name} <button onClick={props.click}>Show More</button></p>
+        <p key={country.name}>{country.name} <button id={country.name} onClick={props.click}>Show More</button></p>
       )} 
     </div>
   )
@@ -48,20 +48,28 @@ const App = () => {
     })
   }, [])
 
-  const 
+  const expandCountry = (event) => {
+
+    let selectedCountry = countries.filter(country => country.name === event.target.id)  
+    setDisplayedComponent(<SingleCountry 
+      country={selectedCountry[0].name} 
+      capital={selectedCountry[0].capital} 
+      population={selectedCountry[0].population} 
+      language={selectedCountry[0].languages}
+      flag={selectedCountry[0].flag} />)
+  }
+
 
   const filterCountries = (event) => {
     let tempArray = (countries.filter(country => country.name.toLowerCase().includes(event.target.value)))
     
     if (tempArray.length < 10) {
       setFiltered(tempArray)
-      setDisplayedComponent(<Output countries={filteredCountries}/>)
+      setDisplayedComponent(<Output click={expandCountry} countries={filteredCountries}/>)
     } 
     
     if (tempArray.length >= 10) {
-      let tooManySearches = [{name: 'Too many matches, specify search more'}]
-      setFiltered(tooManySearches)
-      setDisplayedComponent(<Output countries={filteredCountries}/>)
+      setDisplayedComponent(['Too many matches, specify search more'])
     }
 
     if (tempArray.length === 1) {
