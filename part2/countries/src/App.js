@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, {useEffect} from 'react'
 import useState from 'react-usestateref'
 import axios from 'axios'
 
@@ -26,7 +26,8 @@ const Weather = (props) => {
       <h2>Weather in {props.city}</h2>
 
       <p><b>Temperature: </b>{props.temp}</p>
-      {/* <p><b>Wind: </b>{props.wind}</p> */}
+      <img src={props.icon} alt='weather'></img>
+      <p><b>Wind: </b>{props.windSpeed}mph, direction: {props.direction}</p>
     </div>
   )
 }
@@ -63,32 +64,33 @@ const App = () => {
     })
   }, [])
 
-  const setWeatherForCapital = (capital) => {
+  const setWeatherForCapital = async(capital) => {
     const params = {
       access_key : '0cbacbaf8ace377452f0ddd9fc785b14',
       query : capital
     }
-
-    axios
-    .get('http://api.weatherstack.com/current', {params})
-    .then(response => {
-      
-    })
-  }  
+    const response = await axios.get('http://api.weatherstack.com/current', {params})
+    
+    return response
+  }
 
   const expandCountry = (event) => {
     let selectedCountry = countries.filter(country => country.name === event.target.id) 
-    setWeatherForCapital(selectedCountry[0].capital) 
-    
-    console.log(setWeatherForCapital(selectedCountry[0].capital) );
 
-    setDisplayedComponent(<SingleCountry 
-      country={selectedCountry[0].name} 
-      capital={selectedCountry[0].capital} 
-      population={selectedCountry[0].population} 
-      language={selectedCountry[0].languages}
-      flag={selectedCountry[0].flag} 
-      weather={<Weather city={selectedCountry[0].capital}/>}/>)
+    setWeatherForCapital(selectedCountry[0].capital).then(response => {
+      let temperature = response.data.current.temperature
+      let windSpeed = response.data.current.wind_speed
+      let direction = response.data.current.wind_dir
+      let weatherIcon = response.data.current.weather_icons[0]
+
+      setDisplayedComponent(<SingleCountry 
+        country={selectedCountry[0].name} 
+        capital={selectedCountry[0].capital} 
+        population={selectedCountry[0].population} 
+        language={selectedCountry[0].languages}
+        flag={selectedCountry[0].flag} 
+        weather={<Weather city={selectedCountry[0].capital} temp={temperature} windSpeed={windSpeed} direction={direction} icon={weatherIcon}/>}/>)
+    })
   }
 
   const filterCountries = (event) => {
@@ -104,15 +106,20 @@ const App = () => {
     }
 
     if (tempArray.length === 1) {
-      setDisplayedComponent(
-      <SingleCountry 
-        country={tempArray[0].name} 
-        capital={tempArray[0].capital} 
-        population={tempArray[0].population} 
-        language={tempArray[0].languages}
-        flag={tempArray[0].flag}
-        weather={<Weather city={tempArray[0].capital}/>}
-      />)
+      setWeatherForCapital(tempArray[0].capital).then(response => {
+        let temperature = response.data.current.temperature
+        let windSpeed = response.data.current.wind_speed
+        let direction = response.data.current.wind_dir
+        let weatherIcon = response.data.current.weather_icons[0]
+  
+        setDisplayedComponent(<SingleCountry 
+          country={tempArray[0].name} 
+          capital={tempArray[0].capital} 
+          population={tempArray[0].population} 
+          language={tempArray[0].languages}
+          flag={tempArray[0].flag} 
+          weather={<Weather city={tempArray[0].capital} temp={temperature} windSpeed={windSpeed} direction={direction} icon={weatherIcon}/>}/>)
+      })
     }
   }
 
