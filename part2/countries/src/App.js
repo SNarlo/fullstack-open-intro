@@ -54,7 +54,6 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFiltered] = useState([])
   const [displayedComponent, setDisplayedComponent] = useState()
-  const [weather, setWeather] = useState([])
 
   useEffect(() => {
     axios
@@ -73,7 +72,7 @@ const App = () => {
     axios
     .get('http://api.weatherstack.com/current', {params})
     .then(response => {
-      setWeather(response)
+      
     })
   }  
 
@@ -81,13 +80,15 @@ const App = () => {
     let selectedCountry = countries.filter(country => country.name === event.target.id) 
     setWeatherForCapital(selectedCountry[0].capital) 
     
+    console.log(setWeatherForCapital(selectedCountry[0].capital) );
+
     setDisplayedComponent(<SingleCountry 
       country={selectedCountry[0].name} 
       capital={selectedCountry[0].capital} 
       population={selectedCountry[0].population} 
       language={selectedCountry[0].languages}
       flag={selectedCountry[0].flag} 
-      weather={<Weather city={selectedCountry[0].capital} temp={weather.temperature}/>}/>)
+      weather={<Weather city={selectedCountry[0].capital}/>}/>)
   }
 
   const filterCountries = (event) => {
