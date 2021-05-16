@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 
 const Numbers = (props) => {
   return (
@@ -53,11 +53,10 @@ const App = () => {
   const [ listShown, setListShown] = useState([]) 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    personService.getAllPersons()
       .then(response => {
-        setPersons(response.data)
-        setListShown(response.data)
+        setPersons(response)
+        setListShown(response)
       })
   }, [])
  
@@ -93,10 +92,14 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     } else {
-      setPersons(persons.concat(newPerson))
-      setListShown(persons)
-      setNewName('')
-      setNewNumber('')
+      personService.create(newPerson)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setListShown(persons.concat(response))
+        setNewName('')
+        setNewNumber('')
+      })
+      
     }
   }
 
@@ -104,7 +107,6 @@ const App = () => {
     setFilter([])
     setFilter(persons.filter(person => person.name.toLowerCase().includes(event.target.value)))
     setListShown(filtered)
-
   }
 
   return (
