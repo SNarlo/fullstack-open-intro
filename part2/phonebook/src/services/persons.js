@@ -17,4 +17,8 @@ const update = (id, newObject) => {
     return request.then(response => response.data)
 }
 
+const deleteEntry = () => {
+    
+}
+
 export default {getAllPersons, create, update}
