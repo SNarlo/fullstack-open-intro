@@ -5,8 +5,8 @@ const Numbers = (props) => {
   return (
     <div>
       {props.persons.map(person => 
-        <p key={person.name}>{person.name} {person.number}</p>
-      )}
+        <p key={person.name}>{person.name} {person.number} <Button id={person.name} name={props.name} click={props.click}/></p> 
+      )}   
     </div>
   )
 }
@@ -14,7 +14,6 @@ const Numbers = (props) => {
 const Input = (props) => {
   return (
     <>
-      <br></br>
       {props.name} <input onChange={props.change} value={props.val}/>
       <br></br>
     </>
@@ -24,8 +23,7 @@ const Input = (props) => {
 const Button = (props) => {
   return (
     <>
-      <br></br>
-      <button type='submit' onClick={props.click}>{props.name}</button>
+      <button id={props.id} type='submit' onClick={props.click}>{props.name}</button>
     </>
   )
 }
@@ -49,7 +47,6 @@ const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
-  const [ filtered, setFilter] = useState([])
   const [ listShown, setListShown] = useState([]) 
 
   useEffect(() => {
@@ -104,9 +101,23 @@ const App = () => {
   }
 
   const filterList = (event) => {
-    setFilter([])
-    setFilter(persons.filter(person => person.name.toLowerCase().includes(event.target.value)))
-    setListShown(filtered)
+    setListShown(persons.filter(person => person.name.toLowerCase().includes(event.target.value)))
+  }
+
+  const deleteContact = (event) => {
+    event.preventDefault()
+    
+    const personDeleted = persons.find(person => person.name === event.target.id)
+    const contactId = personDeleted.id
+
+    window.confirm(`Delete ${personDeleted.name}?`)
+
+    personService.deleteEntry(contactId)
+    .then( 
+      setPersons(persons.filter(person => person.id !== contactId))
+    ).then(
+      setListShown(persons.filter(person => person.id !== contactId)) // bad form 
+    )
   }
 
   return (
@@ -120,7 +131,7 @@ const App = () => {
         addButton={<Button name='add' click={addNewPerson}/>}
       />
       <h2>Numbers</h2>
-      <Numbers persons={listShown}/>
+      <Numbers persons={listShown} name={'Delete'} click={deleteContact}/>
     </div>
   )
 }
