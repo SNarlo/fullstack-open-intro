@@ -84,8 +84,17 @@ const App = () => {
       number: newNumber
     }
 
-    if (checkIfIncludedAlready(newPerson.name)) {
-      window.alert(`${newPerson.name} + " is already added`)
+    if (!checkIfIncludedAlready(newPerson.name)) {
+      const personInPhonebook = persons.filter(person => person.name === newPerson.name)
+      if (personInPhonebook.number !== newPerson.number) {
+        window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`)
+        personService.update(personInPhonebook[0].id, newPerson)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== response.id ? person : response))
+          setListShown(persons.map(person => person.id !== response.id ? person : response))
+        })
+      }
+      
       setNewName('')
       setNewNumber('')
     } else {

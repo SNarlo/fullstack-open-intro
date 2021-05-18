@@ -1,18 +1,13 @@
 {
   "persons": [
     {
-      "name": "seb",
-      "number": "12",
-      "id": 1
-    },
-    {
-      "name": "fg",
-      "number": "3456",
+      "name": "Ada Lovelace",
+      "number": "123",
       "id": 2
     },
     {
-      "name": "ghmbgfd",
-      "number": "23456yu",
+      "name": "Dan Abramov",
+      "number": "45",
       "id": 3
     }
   ]
