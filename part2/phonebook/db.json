@@ -12,8 +12,23 @@
     },
     {
       "name": "Seb",
-      "number": "0987654",
+      "number": "223",
       "id": 7
+    },
+    {
+      "name": "Ada Lovelace ",
+      "number": "123456",
+      "id": 8
+    },
+    {
+      "name": "Ron",
+      "number": "2345",
+      "id": 9
+    },
+    {
+      "name": "Sebbi",
+      "number": "2",
+      "id": 10
     }
   ]
 }

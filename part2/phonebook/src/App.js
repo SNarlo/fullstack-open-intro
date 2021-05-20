@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import personService from './services/persons'
+import './App.css'
 
 const Numbers = (props) => {
   return (
@@ -28,6 +29,14 @@ const Button = (props) => {
   )
 }
 
+const Message = (props) => {
+  return (
+    <>
+      <p className={props.className}>{props.message}</p>
+    </>
+  )
+}
+
 const Form = (props) => {
   return (
     <form>
@@ -46,8 +55,10 @@ const App = () => {
 
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber] = useState('')
-  const [ listShown, setListShown] = useState([]) 
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ listShown, setListShown ] = useState([]) 
+  const [ message, setMessage ] = useState('')
+  const [ messageClass, setMessageClass ] = useState('hidden')
 
   useEffect(() => {
     personService.getAllPersons()
@@ -83,7 +94,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-
+    
     if (checkIfIncludedAlready(newPerson.name)) {
       const personInPhonebook = persons.filter(person => person.name === newPerson.name)
       if (personInPhonebook.number !== newPerson.number) {
@@ -92,6 +103,12 @@ const App = () => {
         .then(response => {
           setPersons(persons.map(person => person.id !== response.id ? person : response))
           setListShown(persons.map(person => person.id !== response.id ? person : response))
+          setMessageClass('good_message')
+          setMessage(`Changed ${newPerson.name}'s number`)
+          setTimeout(() => {
+            setMessage('')
+            setMessageClass('hidden')
+          }, 2500)
         })
       }
       setNewName('')
@@ -103,6 +120,14 @@ const App = () => {
       .then(response => {
         setPersons(persons.concat(response))
         setListShown(persons.concat(response))
+
+        setMessageClass('good_message')
+        setMessage(`Added ${newPerson.name}`)
+        setTimeout(() => {
+          setMessage('')
+          setMessageClass('hidden')
+        }, 2500)
+
         setNewName('')
         setNewNumber('')
       })
@@ -133,6 +158,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message className={messageClass} message={message}/>
       <Input name={'Filter phonebook: '} change={filterList}/>
       <h2>Add New Contact</h2>
       <Form heading={"Add a new contact"} 
