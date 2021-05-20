@@ -131,7 +131,6 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
-      
     }
   }
 
@@ -153,6 +152,14 @@ const App = () => {
     ).then(
       setListShown(persons.filter(person => person.id !== contactId)) // bad form 
     )
+    .catch(error => {
+      setMessageClass('bad_message')
+      setMessage(`Information of ${personDeleted.name} has already been removed from the server`)
+      setTimeout(() => {
+        setMessage('')
+        setMessageClass('hidden')
+      }, 4000)
+    })
   }
 
   return (

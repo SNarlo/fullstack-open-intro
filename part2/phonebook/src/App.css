@@ -7,8 +7,10 @@
     color: #117706;
     border: 2px solid #117706;
     border-radius: 5px;
-    width: 200px;
-    height: 30px;
+    width: 400px;
+    height: inherit;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
     font-size: 16px;
     text-align: center;
 }
@@ -22,8 +24,10 @@
     color: red;
     border: 2px solid red;
     border-radius: 5px;
-    width: 200px;
-    height: 30px;
+    width: 400px;
+    height: inherit;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
     font-size: 16px;
     text-align: center;
 }
